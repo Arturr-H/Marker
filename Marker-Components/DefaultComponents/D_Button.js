@@ -20,7 +20,7 @@ const D_Button = (props) => {
 
                 borderRadius: Variables.DEFAULT_BORDER_RADIUS,
             }}
-            onPress={() => props.func}
+            onPress={props.func}
         >
 
             <Text>{props.title}</Text>

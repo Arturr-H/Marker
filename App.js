@@ -19,7 +19,7 @@ import Haptic from './Marker-Components/Functions/Haptic';
 /*                        */
 import Label from './Marker-Components/DefaultComponents/Label';
 import Map, { POS_LATITUDE, POS_LONGITUDE } from './Marker-Components/DefaultComponents/Map';
-import D_Button from './Marker-Components/DefaultComponents/D_Button';
+import LABEL_BAR from './Marker-Components/DefaultComponents/LabelBar';
 import Navigation_Bar from './Marker-Components/DefaultComponents/Navigation-bar';
 /*                        */
 /*   »»» COMPONENTS «««   */
@@ -61,6 +61,8 @@ const App = () => {
     const[MAP_UI_STYLE, SET_MAP_UI_STYLE] = useState("dark")
 
     const[ADD_MARKER_BUTTON_STATUS, SET_ADD_MARKER_BUTTON_STATUS] = useState("New Marker")
+
+    const LABEL_BAR_Y = useRef(new Animated.Value(-50)).current;
 
     const Animate = (ANIMATION, END_VALUE) => {
         Animated.timing(ANIMATION, {
@@ -105,9 +107,10 @@ const App = () => {
                 lat: POS_LATITUDE,
                 lon: POS_LONGITUDE,
 
-                AnimX: 50,
-                AnimY: -50,
+                labels: Variables.CURRENT_MARKER_LABELS,
             },)
+            Variables.CURRENT_MARKER_LABELS = [];//Clearar alla labels så nästa marker man sätter ut inte börjar med de gamla labelsen...
+
         }
         function Down() {
             SET_MODIFYING_MCS(false)
@@ -127,14 +130,28 @@ const App = () => {
         }
         (MODIFYING_MARKER_CONFIG == false) ? Up() : Down();
     }
+
+    const[LABEL_BAR_STATUS, SET_LABEL_BAR_STATUS] = useState(false);// LABEL BAR UP OR DOWN
+    function TOGGLE_LABEL_BAR() {// TOGGLES LABEL BAR, IF ITS DOWN, GO UP...
+        if (LABEL_BAR_STATUS == false) {
+            SET_LABEL_BAR_STATUS(true)
+            Animate(LABEL_BAR_Y, 0)
+        }else{
+            SET_LABEL_BAR_STATUS(false)
+            Animate(LABEL_BAR_Y, -50)
+        }
+    }
+
     return(
         <View style={styles.APP_CONTAINER}>
             <Map UI={MAP_UI_STYLE}/>
 
+            <Navigation_Bar MyMarkers={() => TOGGLE_LABEL_BAR()} />
 
-            <Navigation_Bar>
-
-            </Navigation_Bar>
+            <Animated.View style={{transform: [{ translateY: LABEL_BAR_Y }]}}>
+                <LABEL_BAR/>
+            </Animated.View>
+            
 
             <TouchableHighlight style={[styles.BUTTON, {borderRadius: ADDMARKER_BTN_BR}]} onPress={() => 
                 {
@@ -162,6 +179,7 @@ const App = () => {
                                     labelText={styles.LABEL_TEXT}
                                     key={INDEX}
                                     ID={INDEX}
+                                    LabelBar={false}
                                 />
                             )
                         })
@@ -251,7 +269,7 @@ const styles = StyleSheet.create({
         fontSize: 12,
     },
     SCROLL_VIEW_RIGHT_MARGIN: {
-        marginHorizontal: 18,
+        marginHorizontal: 16,
     },
     BUTTON: {
         backgroundColor: Colors.MAIN_COLOR,

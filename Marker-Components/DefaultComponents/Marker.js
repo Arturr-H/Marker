@@ -6,10 +6,9 @@ import Variables from '../Variables/Variables';
 
 
 const Marker = (props) => {
-    const MARKER_ANIMATION_VALUE_X = useRef(new Animated.Value(props.Marker.AnimX)).current;
+    const MARKER_ANIMATION_VALUE_X = useRef(new Animated.Value(50)).current;
 
-    const MARKER_ANIMATION_VALUE_Y = useRef(new Animated.Value(props.Marker.AnimY)).current;
-    const MARKER_ANIMATION_VALUE_OPACITY = useRef(new Animated.Value(props.Marker.AnimY)).current;
+    const MARKER_ANIMATION_VALUE_Y = useRef(new Animated.Value(-50)).current;
 
     const Animate = (ANIMATION, END_VALUE) => {
         Animated.timing(ANIMATION, {
@@ -31,7 +30,7 @@ const Marker = (props) => {
                 longitude: props.Marker.lon,
             }}
             title={props.Marker.name}
-            description={props.Marker.description}
+            description={props.Marker.description + ", TAGS: " + props.Marker.labels}
         >
             <Animated.View 
                 style={[
@@ -42,8 +41,7 @@ const Marker = (props) => {
                             { rotate: "-45deg" }, 
                             { translateY: MARKER_ANIMATION_VALUE_Y }, 
                             { translateX: MARKER_ANIMATION_VALUE_X }
-                        ],
-                        opacity: MARKER_ANIMATION_VALUE_OPACITY,
+                        ]
                     }
                 ]}
             >

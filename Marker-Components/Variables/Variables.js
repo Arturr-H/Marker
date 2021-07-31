@@ -2,15 +2,16 @@ const Variables = {
     DEFAULT_BORDER_RADIUS: 5,
     MARKER_CONFIG_AREA_WIDTH: 250,
 
+    CURRENT_MARKER_LABELS: [], // ALLA LABELS SOM SITTER PÅ NURVARANDE MARKERN
+    CURRENT_LABEL_FILTERS: [], //ALLA FILTER SOM JUST NU ÄR AKTIVA
+
     MARKERS: [
         {
             name: "shit",
             description: "smörgås",
             lat: 37.78825,
             lon: -122.4324,
-
-            AnimX: 0,
-            AnimY: 0,
+            labels: ["Beach"]
         },
     ],
 

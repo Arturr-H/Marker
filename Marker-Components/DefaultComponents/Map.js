@@ -19,6 +19,9 @@ function Map(props) {
         SET_FOLLOW_USR_LOC(false)
     }, 100);
 
+    function ARRAY_INTERSECTION(a1,a2){// kollar om 2 olika arrays har en eller fler av samma element, (för att jämföra labels)
+        return a1.filter(function(n) { return a2.indexOf(n) !== -1;});
+    }
     return(
         <MapView
 
@@ -35,19 +38,19 @@ function Map(props) {
                 styles.map
             }
 
-            onPress={(e) => { // BARA FÖR DEBUGGING
-                Variables.MARKERS.push({
-                    name: "namdamndw",
-                    description: "MC_DESCRIPTION",
-                    lat: e.nativeEvent.coordinate.latitude,
-                    lon: e.nativeEvent.coordinate.longitude,
-                },)
-            }}
+            // onPress={(e) => { // BARA FÖR DEBUGGING
+            //     Variables.MARKERS.push({
+            //         name: "namdamndw",
+            //         description: "MC_DESCRIPTION",
+            //         lat: e.nativeEvent.coordinate.latitude,
+            //         lon: e.nativeEvent.coordinate.longitude,
+            //     },)
+            // }}
             initialRegion={{
                 latitude: 0,
                 longitude: 0,
-                latitudeDelta: 0.0922,
-                longitudeDelta: 0.0421,
+                latitudeDelta: 5.0922,
+                longitudeDelta: 5.0421,
             }}
             followsUserLocation={FOLLOW_USR_LOC}
 
@@ -61,12 +64,25 @@ function Map(props) {
                                         
                 Variables.MARKERS.map((MARKER, INDEX) => {
 
-                    return(
-                        <Marker 
-                            Marker={MARKER}
-                            key={INDEX}
-                        />
-                    );
+                    if (Variables.CURRENT_LABEL_FILTERS != "") {
+                        if (ARRAY_INTERSECTION(Variables.CURRENT_LABEL_FILTERS, MARKER.labels) != "") {
+                            return(
+                                <Marker 
+                                    Marker={MARKER}
+                                    key={INDEX}
+                                />
+                            );
+                        }
+
+                    }else{
+                        return(
+                            <Marker 
+                                Marker={MARKER}
+                                key={INDEX}
+                            />
+                        );
+                    }
+
                 })
             }
         </MapView>
@@ -76,31 +92,8 @@ function Map(props) {
 const styles = StyleSheet.create({
     map: {
         ...StyleSheet.absoluteFillObject,
-        zIndex: -1
+        zIndex: -1,
     },
-    Marker: {
-        padding: 4,
-
-        borderTopLeftRadius: 20,
-        borderBottomRightRadius: 20,
-        borderTopRightRadius: 20,
-
-        backgroundColor: Colors.SELECTED,
-        bottom: 15,
-
-    },
-    INNER_MARKER: {
-        padding: 10,
-
-        borderTopLeftRadius: 20,
-        borderBottomLeftRadius: 20,
-        borderTopRightRadius: 20,
-
-        backgroundColor: "yellow",
-        transform: [{ rotate: "90deg" }],
-
-    },
-
 })
 
 export default Map;
