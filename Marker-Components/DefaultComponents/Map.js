@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import React, { useState, useRef } from 'react';
+import { StyleSheet, View, Animated } from 'react-native';
 import MapView from 'react-native-maps';
+import Colors from '../Variables/Colors';
 import Variables from '../Variables/Variables';
+import Marker from './Marker';
 
 //▽▽ EXPORTED VARIABLES ▽▽
 
@@ -12,8 +14,11 @@ var POS_LONGITUDE;
 
 function Map(props) {
 
-    const[CURRENT_POS, SET_CURRENT_POS] = useState();
-    
+    const[FOLLOW_USR_LOC, SET_FOLLOW_USR_LOC] = useState(true);
+    setTimeout(() => {//FÖLJ USER LOCATIONEN FÖRSTA SEKUNDEN SÅ NÄR MAN GÅR IN PÅ APPEN SÅ BÖRJAN MAN DÄR MAN ÄR PÅ KARTAN
+        SET_FOLLOW_USR_LOC(false)
+    }, 100);
+
     return(
         <MapView
 
@@ -23,16 +28,28 @@ function Map(props) {
             showsPointsOfInterest={false}
             showsBuildings={true}
             showsTraffic={false}
-            userInterfaceStyle={"dark"}
+            userInterfaceStyle={props.UI}
             showsUserLocation={true}
-            style={styles.map}
-    
+
+            style={
+                styles.map
+            }
+
+            onPress={(e) => { // BARA FÖR DEBUGGING
+                Variables.MARKERS.push({
+                    name: "namdamndw",
+                    description: "MC_DESCRIPTION",
+                    lat: e.nativeEvent.coordinate.latitude,
+                    lon: e.nativeEvent.coordinate.longitude,
+                },)
+            }}
             initialRegion={{
-                latitude: 37.78825,
-                longitude: -122.4324,
+                latitude: 0,
+                longitude: 0,
                 latitudeDelta: 0.0922,
                 longitudeDelta: 0.0421,
             }}
+            followsUserLocation={FOLLOW_USR_LOC}
 
             onUserLocationChange={(e) => {
                 POS_LATITUDE = e.nativeEvent.coordinate.latitude;
@@ -41,21 +58,14 @@ function Map(props) {
 
         >
             {
+                                        
                 Variables.MARKERS.map((MARKER, INDEX) => {
+
                     return(
-                        <MapView.Marker 
-            
+                        <Marker 
+                            Marker={MARKER}
                             key={INDEX}
-                            coordinate={{
-                                latitude: MARKER.lat,
-                                longitude: MARKER.lon,
-                            }}
-                            title={MARKER.name}
-                            description={MARKER.description}
-                    
-                        >
-                            <View style={styles.Marker} />
-                        </MapView.Marker>
+                        />
                     );
                 })
             }
@@ -69,10 +79,28 @@ const styles = StyleSheet.create({
         zIndex: -1
     },
     Marker: {
-        padding: 8,
-        borderRadius: 10,
+        padding: 4,
+
+        borderTopLeftRadius: 20,
+        borderBottomRightRadius: 20,
+        borderTopRightRadius: 20,
+
+        backgroundColor: Colors.SELECTED,
+        bottom: 15,
+
+    },
+    INNER_MARKER: {
+        padding: 10,
+
+        borderTopLeftRadius: 20,
+        borderBottomLeftRadius: 20,
+        borderTopRightRadius: 20,
+
         backgroundColor: "yellow",
-    }
+        transform: [{ rotate: "90deg" }],
+
+    },
+
 })
 
 export default Map;

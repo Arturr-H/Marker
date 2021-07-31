@@ -8,6 +8,9 @@ const Variables = {
             description: "smörgås",
             lat: 37.78825,
             lon: -122.4324,
+
+            AnimX: 0,
+            AnimY: 0,
         },
     ],
 
