@@ -21,10 +21,15 @@ const D_Button = (props) => {
 
                 borderRadius: Variables.DEFAULT_BORDER_RADIUS,
             }}
-            onPress={props.func}
+            onPress={() => {
+                props.func()
+                Haptic("medium")
+            }}
         >
 
-            <Text>{props.title}</Text>
+            <Text style={{
+                fontWeight: "300",
+            }}>{props.title}</Text>
         </TouchableHighlight>
     );
 }

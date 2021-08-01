@@ -54,6 +54,17 @@ FÅ NSUserDefaults att fungera
 
 */
 
+/*
+
+om du skriver
+onPress={() => {
+    props.func,
+    NågonFunktion()
+}}
+så kommer det inte fungera, props.func är en reference till functionen inte att det ska callas, så man skriver istället props.func() med paranteser.
+https://www.reddit.com/r/reactnative/comments/ow08uc/how_do_you_execute_multiple_things_onpress/
+
+*/
 
 const App = () => {
 
@@ -286,7 +297,7 @@ const styles = StyleSheet.create({
         zIndex: 5,
     },
     TEXT: {
-        fontWeight: "200",
+        fontWeight: "300",
         fontSize: 20,
         alignSelf: "center",
     },
