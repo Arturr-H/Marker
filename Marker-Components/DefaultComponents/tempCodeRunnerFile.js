@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { StyleSheet, View, Animated } from 'react-native';
-import MapView from 'react-native-maps'; // MapView, { PROVIDER_GOOGLE }
+import MapView from 'react-native-maps';
 import Colors from '../Variables/Colors';
 import Variables from '../Variables/Variables';
 import Marker from './Marker';
@@ -14,21 +14,14 @@ var POS_LONGITUDE;
 
 function Map(props) {
 
-    const[LABEL_FILTERS, SET_LABEL_FILTERS] = useState(Variables.CURRENT_LABEL_FILTERS);
-    const[CURRENT_MARKERS, SET_MARKERS] = useState(Variables.MARKERS);
-    // OOO DET FUNGERAR, JAG BINDADE VARIABLES.CURRENT LABEL FILTERS TILL EN USESTATE HOOK OCH HOOKEN UPPDATERAS NÄR VARIABELN UPPDATERAS!!
-
-
     const[FOLLOW_USR_LOC, SET_FOLLOW_USR_LOC] = useState(true);
     setTimeout(() => {//FÖLJ USER LOCATIONEN FÖRSTA SEKUNDEN SÅ NÄR MAN GÅR IN PÅ APPEN SÅ BÖRJAN MAN DÄR MAN ÄR PÅ KARTAN
-        SET_FOLLOW_USR_LOC(false);
+        SET_FOLLOW_USR_LOC(false)
     }, 500);
 
     function ARRAY_INTERSECTION(a1,a2){// kollar om 2 olika arrays har en eller fler av samma element, (för att jämföra labels)
         return a1.filter(function(n) { return a2.indexOf(n) !== -1;});
     }
-
-
     return(
         <MapView
 
@@ -40,9 +33,19 @@ function Map(props) {
             showsTraffic={false}
             userInterfaceStyle={props.UI}
             showsUserLocation={true}
-            // provider={PROVIDER_GOOGLE}
-            style={styles.map}
 
+            style={
+                styles.map
+            }
+
+            // onPress={(e) => { // BARA FÖR DEBUGGING
+            //     Variables.MARKERS.push({
+            //         name: "namdamndw",
+            //         description: "MC_DESCRIPTION",
+            //         lat: e.nativeEvent.coordinate.latitude,
+            //         lon: e.nativeEvent.coordinate.longitude,
+            //     },)
+            // }}
             initialRegion={{
                 latitude: 0,
                 longitude: 0,
@@ -59,10 +62,10 @@ function Map(props) {
         >
             {
                                 
-                CURRENT_MARKERS.map((MARKER, INDEX) => {
+                Variables.MARKERS.map((MARKER, INDEX) => {
 
-                    if (LABEL_FILTERS != "") {
-                        if (ARRAY_INTERSECTION(LABEL_FILTERS, MARKER.labels) != "") {
+                    if (Variables.CURRENT_LABEL_FILTERS != "") {
+                        if (ARRAY_INTERSECTION(Variables.CURRENT_LABEL_FILTERS, MARKER.labels) != "") {
                             return(
                                 <Marker 
                                     Marker={MARKER}
@@ -79,6 +82,7 @@ function Map(props) {
                             />
                         );
                     }
+
                 })
             }
         </MapView>
@@ -89,7 +93,6 @@ const styles = StyleSheet.create({
     map: {
         ...StyleSheet.absoluteFillObject,
         zIndex: -1,
-        
     },
 })
 

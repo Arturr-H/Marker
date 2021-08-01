@@ -7,7 +7,7 @@ import Haptic from "../Functions/Haptic";
 const Label = (props) => {
 
     const CURRENT_LABEL_OBJECT = Variables.LABELS[props.ID]
-    const [LabelBar_LABEL_STATUS, SET_LabelBar_LABEL_STATUS] = useState(false);
+    const [LabelBar_LABEL_STATUS, SET_LabelBar_LABEL_STATUS] = useState(true);
 
     const [CURRENT_LABEL_OBJECT_HOOK, SET_CURRENT_LABEL_OBJECT_HOOK] = useState(CURRENT_LABEL_OBJECT.p); // jag gör en hook till den så att knappen re-rendereras...
 
@@ -20,11 +20,11 @@ const Label = (props) => {
                 props.style, 
                 {
 
-                    backgroundColor: (props.LabelBar == false) 
+                    backgroundColor: (props.LabelBar == false)//Olika select färger beroende på om det är LabelBar eller vanliga label selector
                         ?
                             (CURRENT_LABEL_OBJECT_HOOK == false) ? Colors.MAIN_COLOR : Colors.SELECTED//Här satte jag CURRENT_LABEL_OBJECT_HOOK så att den re-redereras
                         :
-                            (LabelBar_LABEL_STATUS == false) ? Colors.MAIN_COLOR : Colors.SELECTED//Här satte jag CURRENT_LABEL_OBJECT_HOOK så att den re-redereras
+                            (LabelBar_LABEL_STATUS == false) ? Colors.SELECTED : Colors.MAIN_COLOR//Här satte jag CURRENT_LABEL_OBJECT_HOOK så att den re-redereras
 
 
                 }
@@ -37,12 +37,13 @@ const Label = (props) => {
                 // DET ÄR DÄRFÖR DET FINNS 2 ST IF FUNCTIONS NEDANFÖR HÄR, DE 2 OLIKA LABELSARNA HAR 2 OLIKA FUNKTIONER
 
                 if (props.LabelBar == true) { // OM LABELSARNA ÄR I FILTER RADEN
+
                     SET_LabelBar_LABEL_STATUS((LabelBar_LABEL_STATUS == false) ? true : false);
 
                     if (LabelBar_LABEL_STATUS == true) {
-                        Variables.CURRENT_MARKER_LABELS.push(CURRENT_LABEL_OBJECT.name)//lägger till den här labeln till marker label variabeln
+                        Variables.CURRENT_LABEL_FILTERS.push(CURRENT_LABEL_OBJECT.name)//lägger till den här labeln till marker label variabeln
                     }else{
-                        Variables.CURRENT_MARKER_LABELS.splice(Variables.CURRENT_MARKER_LABELS.indexOf(CURRENT_LABEL_OBJECT.name), 1)//Shit vad lång men den lixom letar efter labeln som den ska ta bort med indexOf() och sen splicar ut den ur arrayn...
+                        Variables.CURRENT_LABEL_FILTERS.splice(Variables.CURRENT_LABEL_FILTERS.indexOf(CURRENT_LABEL_OBJECT.name), 1)//Shit vad lång men den lixom letar efter labeln som den ska ta bort med indexOf() och sen splicar ut den ur arrayn...
                     }
                 }
                 

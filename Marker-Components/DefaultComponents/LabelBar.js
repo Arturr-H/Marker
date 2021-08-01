@@ -8,6 +8,7 @@ const WIDTH = Dimensions.get('window').width;
 
 const LABEL_BAR = (props) => {
 
+
     return(
         <ScrollView style={styles.BAR} horizontal={true}>
             {

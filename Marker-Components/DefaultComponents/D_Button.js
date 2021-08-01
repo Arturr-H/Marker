@@ -2,6 +2,7 @@ import React from "react";
 import { TouchableHighlight, Text } from "react-native";
 import Variables from "../Variables/Variables";
 import Colors from "../Variables/Colors";
+import Haptic from "../Functions/Haptic";
 const D_Button = (props) => {
 
     return(

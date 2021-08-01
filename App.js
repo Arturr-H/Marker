@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { View, StyleSheet, Text, TouchableHighlight, TextInput, ScrollView, Animated } from 'react-native';
+import { View, StyleSheet, Text, TouchableHighlight, TextInput, ScrollView, Animated, StatusBar } from 'react-native';
 /*   »»» VARIABLES «««    */
 /*                        */
 import Colors from './Marker-Components/Variables/Colors';
@@ -110,7 +110,6 @@ const App = () => {
                 labels: Variables.CURRENT_MARKER_LABELS,
             },)
             Variables.CURRENT_MARKER_LABELS = [];//Clearar alla labels så nästa marker man sätter ut inte börjar med de gamla labelsen...
-
         }
         function Down() {
             SET_MODIFYING_MCS(false)
@@ -151,12 +150,14 @@ const App = () => {
             <Animated.View style={{transform: [{ translateY: LABEL_BAR_Y }]}}>
                 <LABEL_BAR/>
             </Animated.View>
-            
+
+            <StatusBar barStyle="light-content"/> 
+            {/* OVANFÖR FÖR IOS, EFTERSOM NAVIGATION BAREN ÄR EN MÖRK FÄRG MÅSTE STATUS BAREN VARA LIGHT SÅ MAN SER DEN... */}
 
             <TouchableHighlight style={[styles.BUTTON, {borderRadius: ADDMARKER_BTN_BR}]} onPress={() => 
                 {
-                    TOGGLE_MODIFYING_MCS()
-                    RESET_LABELS()
+                    TOGGLE_MODIFYING_MCS();
+                    RESET_LABELS();
                 }} 
                 underlayColor={Colors.DARKENED_MAIN_COLOR}>
                 <View>
